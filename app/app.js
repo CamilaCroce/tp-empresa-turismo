@@ -1,23 +1,35 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
+//LEVANTO LA APLICACION (MAIN)
+const express = require('express'); 
+const bodyParser = require('body-parser'); 
+const path = require('path'); 
+const app = express(); 
 
-const app = express();
+const flightRoute = require('./routes/flightRoute');
+const hotelRoute = require('./routes/hotelRoute');
+const packageRoute = require('./routes/packageRoute');
+const userRoute = require('./routes/userRoute');
 
-const Flys = require('./routes/flys');
-const Hotels = require('./routes/hotels');
-const Users = require('./routes/users');
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: false })); 
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use('/api/flights', flightRoute);
+app.use('/api/hotels', hotelRoute);
+app.use('/api/packages', packageRoute);
+app.use('/api/users', userRoute);
 
-app.get('/', (req, res) => {
-  console.log('TOURISM COMPANY');
-  res.status(200).send({ message: 'Welcome!' });
-})
+app.get('/', (req, res) => { 
+  return res.status(200).json({ message: 'Welcome to the tourism company API!' }); 
+});
+app.get('/help', (req, res) => { 
+  console.log("Pagina de Ayuda"); 
+  res.status(200).json({ message: "Sección de ayuda en construcción" });
+});
 
-app.use('/flys', Flys);
-app.use('/hotels', Hotels);
-app.use('/users', Users);
+module.exports = app; 
 
-module.exports = app;
+
+
+
+
+
+
